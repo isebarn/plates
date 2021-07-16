@@ -1,0 +1,9 @@
+orders:
+  - method: place
+    post: /order/place
+
+  - method: get
+    get: /order
+
+  - method: ship
+    put: /order/ship
