@@ -5,8 +5,8 @@
       <v-card-subtitle>{{ carrier }} - {{ service }}</v-card-subtitle>
       <v-card-text>
         Plates
-        <v-list v-if="plates.length > 0">
-          <v-list-item v-for="(plate, index) in plates" :key="index" two-line>
+        <v-list v-if="orders.length > 0">
+          <v-list-item v-for="(plate, index) in orders" :key="index" two-line>
             <v-list-item-content>
               <v-list-item-title>{{ plate.driver }}</v-list-item-title>
               <v-list-item-subtitle>{{ plate.registration }} </v-list-item-subtitle>
@@ -52,7 +52,7 @@ export default {
       'data.type',
       'data.carrier',
       'data.service',
-      'data.plates',
+      'data.orders',
       'data.customer.city',
       'data.customer.company',
       'data.customer.country',

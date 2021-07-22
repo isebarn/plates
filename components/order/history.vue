@@ -61,7 +61,7 @@ import { mapFields } from 'vuex-map-fields'
 export default {
 
   computed: {
-    ...mapFields('management', [
+    ...mapFields('order', [
       'order.history',
       'order.type'
     ])

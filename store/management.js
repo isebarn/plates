@@ -1,7 +1,7 @@
 import { getField, updateField } from 'vuex-map-fields'
 
 export const state = () => ({
-  selectedPlates: [],
+  selected: [],
   loading_ship: false,
   order: null,
   orders: []
@@ -35,9 +35,9 @@ export const actions = {
     commit('loading_ship')
     this.$shipOrder({
       _id: state.order._id,
-      registrations: state.selectedPlates.map(x => x.registration)
+      registrations: state.selected
     }).then((response) => {
-      commit('update', response.data.data)
+      commit('update', response.data)
     })
   },
 
@@ -49,8 +49,7 @@ export const actions = {
   },
 
   async fetchOrders ({ commit }) {
-    console.log(123)
     const response = await this.$queryOrders(state.data)
-    commit('orders', response.data.data.orders)
+    commit('orders', response.data.orders)
   }
 }

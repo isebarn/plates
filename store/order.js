@@ -5,6 +5,8 @@ export const state = () => ({
   carriers: ['dhl', 'ups'],
   services: ['standard'],
   plate: {},
+  orders: [],
+  order: null,
   receiver: null,
   type: null,
   new_receiver: {
@@ -29,12 +31,16 @@ export const state = () => ({
       country: 'DE'
     }
   ],
-  step: 5,
+  step: 1,
   /*  data: {
     carrier: null,
     service: null,
     type: null,
-    customer: {},
+    customer: {},    - upon finish order -> see some stuff
+
+        -- reference
+        -- tracking-link
+        -- shipping-label link
     plates: []
   } */
   data: {
@@ -62,7 +68,7 @@ export const state = () => ({
     orders: [],
     service: 'standard',
     submitting_user: 'test_user',
-    type: 'deregister'
+    type: null
   }
 })
 
@@ -70,7 +76,7 @@ export const mutations = {
   updateField,
 
   add_plate: (state) => {
-    state.data.plates.push(state.plate)
+    state.data.orders.push(state.plate)
     state.plate = {
       driver: '',
       registration: ''
@@ -79,17 +85,17 @@ export const mutations = {
 
   add_deregistration: (state) => {
     if (state.new_receiver.city !== '') {
-      state.data.plates.push({
+      state.data.orders.push({
         receiver: state.new_receiver,
         registrations: [state.plate.registration]
       })
     } else {
-      const orderReceiver = state.data.plates.find(
+      const orderReceiver = state.data.orders.find(
         x => JSON.stringify(x.receiver) === JSON.stringify(state.receiver))
       if (orderReceiver) {
         orderReceiver.registrations.push(state.plate.registration)
       } else {
-        state.data.plates.push({
+        state.data.orders.push({
           receiver: state.receiver,
           registrations: [state.plate.registration]
         })
@@ -100,6 +106,7 @@ export const mutations = {
       registration: ''
     }
 
+    state.receiver = null
     state.new_receiver = {}
   },
 
@@ -122,6 +129,12 @@ export const mutations = {
 
   placing_order: (state, payload) => {
     state.placing_order = payload
+  },
+
+  completed_order: (state, payload) => {
+    state.placing_order = false
+    state.data = payload
+    state.order = payload
   }
 }
 
@@ -139,7 +152,6 @@ export const getters = {
 }
 
 export const actions = {
-
   add_plate ({ commit }) {
     commit('add_plate')
   },
@@ -156,6 +168,12 @@ export const actions = {
     commit('placing_order', true)
     this.$placeOrder(state.data).then((response) => {
       commit('placing_order', false)
+      commit('completed_order', response.data.data)
     })
+  },
+
+  async fetchOrders ({ commit }) {
+    const response = await this.$queryOrders(state.data)
+    commit('orders', response.data.orders)
   }
 }

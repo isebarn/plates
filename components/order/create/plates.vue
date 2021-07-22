@@ -26,7 +26,7 @@
       <v-btn @click="add_plate">
         Add
       </v-btn>
-      <v-btn @click="step+=1">
+      <v-btn @click="step=6">
         Review
       </v-btn>
     </v-container>
@@ -37,10 +37,6 @@
 import { mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 export default {
-  methods: {
-    ...mapActions('order', ['add_plate'])
-  },
-
   computed: {
     ...mapFields('order', [
       'step',
@@ -48,6 +44,11 @@ export default {
       'plate.driver',
       'plate.registration'
     ])
+  },
+
+  methods: {
+    ...mapActions('order', ['add_plate'])
   }
+
 }
 </script>

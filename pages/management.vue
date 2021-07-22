@@ -17,8 +17,8 @@
             {{ item.customer.first_name }} {{ item.customer.last_name }} - {{ item.customer.company }}
           </template>
           <!-- eslint-disable-next-line -->
-          <template v-slot:item.plates="{item}">
-            {{ item.plates.length + item.processed.length }}
+          <template v-slot:item.orders="{item}">
+            {{ item.orders.length + item.processed.length }}
           </template>
           <!-- eslint-disable-next-line -->
           <template v-slot:item.processed="{item}">
@@ -64,7 +64,7 @@
             </v-tab>
 
             <v-tab-item>
-              <plates />
+              <orders />
             </v-tab-item>
             <v-tab-item>
               <processed />
@@ -83,13 +83,13 @@
 import { mapGetters, mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import processed from '~/components/order/management/processed.vue'
-import plates from '~/components/order/management/plates.vue'
+import orders from '~/components/order/management/orders.vue'
 import history from '~/components/order/management/history.vue'
 export default {
 
   components: {
     processed,
-    plates,
+    orders,
     history
   },
 
@@ -107,9 +107,9 @@ export default {
           value: 'customer'
         },
         {
-          text: '# Plates',
+          text: '# Orders',
           align: 'start',
-          value: 'plates'
+          value: 'orders'
         },
         {
           text: '# Processed',
@@ -122,10 +122,6 @@ export default {
 
   async fetch () {
     await this.fetchOrders()
-  },
-
-  methods: {
-    ...mapActions('management', ['ship', 'fetchOrders'])
   },
 
   computed: {
@@ -145,6 +141,10 @@ export default {
       'order.customer.zip_code',
       'order.history[0].submitting_user'
     ])
+  },
+
+  methods: {
+    ...mapActions('management', ['ship', 'fetchOrders'])
   }
 
 }

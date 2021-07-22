@@ -35,9 +35,9 @@
       <carrier />
       <customer />
       <municipality />
-      <deregister v-if="type=='deregister'" />
+      <deregister v-if="type ==='deregister'" />
       <plates v-else />
-      <reviewDeregistration v-if="type=='deregister'" />
+      <reviewDeregistration v-if="type ==='deregister'" />
       <review v-else />
     </v-stepper>
   </v-container>

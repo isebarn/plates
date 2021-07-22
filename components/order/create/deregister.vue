@@ -28,7 +28,7 @@
             <v-btn @click="add_deregistration">
               Add
             </v-btn>
-            <v-btn @click="step+=1">
+            <v-btn @click="step=6">
               Review
             </v-btn>
           </v-col>
@@ -93,10 +93,6 @@
 import { mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 export default {
-  methods: {
-    ...mapActions('order', ['add_deregistration', 'clear_new_recipent'])
-  },
-
   computed: {
     ...mapFields('order', [
       'step',
@@ -117,6 +113,11 @@ export default {
     receivers () {
       return [...new Set([this.customer, ...this.orders.map(x => x.receiver)].map(x => JSON.stringify(x)))].map(x => JSON.parse(x))
     }
+  },
+
+  methods: {
+    ...mapActions('order', ['add_deregistration', 'clear_new_recipent'])
   }
+
 }
 </script>
